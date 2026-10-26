@@ -8,6 +8,7 @@ import {
     type BomItem,
 } from "../data/billOfMaterials";
 import { canonicalUrlForPage } from "../routes";
+import { Container, ExternalLink, HairlineGrid, Label } from "./layout";
 
 const BOM_URL = canonicalUrlForPage("bom");
 
@@ -22,33 +23,12 @@ const subtotalLabel = (item: BomItem) =>
 
 function VendorLink({ item }: { item: BomItem }) {
     if (!item.link) {
-        return <span style={{ fontSize: "var(--text-sm)", color: "#bbb" }}>—</span>;
+        return <span className="text-label">—</span>;
     }
     return (
-        <a
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-3 py-1 rounded-full transition-colors duration-200"
-            style={{
-                fontSize: "var(--text-sm)",
-                fontWeight: 500,
-                color: "#4DB6AC",
-                backgroundColor: "rgba(77,182,172,0.1)",
-                whiteSpace: "nowrap",
-            }}
-        >
-            {item.vendor ?? "Buy"}
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                    d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-            </svg>
-        </a>
+        <ExternalLink href={item.link} className="whitespace-nowrap lowercase">
+            {item.vendor ?? "buy"}
+        </ExternalLink>
     );
 }
 
@@ -66,280 +46,131 @@ function DirectLink() {
     };
 
     return (
-        <div
-            className="flex flex-wrap items-center gap-3 px-4 py-3 rounded-xl"
-            style={{ backgroundColor: "#fff", border: "2px dashed rgba(0,0,0,0.08)" }}
-        >
-            <span style={{ fontSize: "var(--text-sm)", color: "#777" }}>
-                Direct link to this page
-            </span>
-            <code
-                style={{
-                    fontSize: "var(--text-sm)",
-                    color: "#1a1a1a",
-                    backgroundColor: "#f0ede4",
-                    padding: "4px 10px",
-                    borderRadius: "6px",
-                }}
-            >
-                {BOM_URL}
-            </code>
+        <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
+            <span className="text-label">direct link</span>
+            <code className="bg-chrome px-2 py-1 text-ink">{BOM_URL}</code>
             <button
+                type="button"
                 onClick={copy}
-                className="px-3 py-1 rounded-full cursor-pointer transition-colors duration-200"
-                style={{
-                    fontSize: "var(--text-sm)",
-                    fontWeight: 600,
-                    color: copied ? "#fff" : "#4DB6AC",
-                    backgroundColor: copied ? "#4DB6AC" : "rgba(77,182,172,0.1)",
-                }}
+                className="min-h-9 cursor-pointer border border-ink bg-sheet px-3 text-ink hover:bg-chrome"
             >
-                {copied ? "Copied" : "Copy"}
+                {copied ? "copied" : "copy"}
             </button>
         </div>
     );
 }
 
+const headers = [
+    { label: "part", align: "text-left" },
+    { label: "unit", align: "text-right" },
+    { label: "qty", align: "text-right" },
+    { label: "subtotal", align: "text-right" },
+    { label: "vendor", align: "text-left" },
+];
+
 export function BillOfMaterialPage() {
     return (
-        <div
-            className="min-h-screen"
-            style={{ backgroundColor: "#FBF8EF", fontFamily: "'DM Sans', sans-serif" }}
-        >
-            {/* Banner */}
-            <div
-                className="w-full text-center py-3 px-4 font-medium"
-                style={{ backgroundColor: "#FFB433", color: "#6b4200", fontSize: "14px" }}
-            >
-                ⚠️ Prices are the cheapest offer found online and exclude shipping. The live,
-                most up-to-date sheet is{" "}
-                <a
-                    href={BOM_SHEET_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline font-bold hover:opacity-80 transition-opacity"
-                >
-                    here
-                </a>
-                .
-            </div>
+        <main>
+            <Container className="pt-6">
+                <HairlineGrid as="section">
+                    <div className="flex grow basis-60 flex-col bg-sheet px-6 py-8 md:px-7">
+                        <Label>a · appendix</Label>
+                        <h1 className="mt-1 text-[clamp(40px,5vw,56px)] leading-none font-light tracking-[-0.02em]">
+                            Bill of materials
+                        </h1>
+                        <div className="mt-auto pt-8">
+                            <p className="font-dot text-[72px] leading-[0.9]">{money(bomTotalCost).split(".")[0]}</p>
+                            <Label small className="mt-2.5">
+                                total · {bomLineCount} line items
+                            </Label>
+                        </div>
+                    </div>
+                    <div className="flex min-w-0 grow-[999] basis-[600px] flex-col gap-6 bg-sheet px-6 py-8 md:px-10">
+                        <p className="max-w-[680px]">
+                            Every part needed to build one M. Prices are the cheapest offer found online and exclude
+                            shipping. The camera and audio parts are optional. The{" "}
+                            <ExternalLink href={BOM_SHEET_URL}>live sheet</ExternalLink> is the most up to date.
+                        </p>
+                        <DirectLink />
+                    </div>
+                </HairlineGrid>
+            </Container>
 
-            {/* Top bar */}
-            <div
-                className="flex items-center justify-between px-10 py-4 sticky top-0 z-10"
-                style={{
-                    borderBottom: "2px dashed rgba(0,0,0,0.08)",
-                    backgroundColor: "#FBF8EF",
-                }}
-            >
-                <div className="flex items-center gap-2">
-                    <span
-                        className="inline-block w-2.5 h-2.5 rounded-full"
-                        style={{ backgroundColor: "#FFB433" }}
-                    />
-                    <span style={{ fontSize: "var(--text-base-secondary)", color: "#555" }}>
-                        bill of materials
-                    </span>
-                </div>
-                <div
-                    className="flex items-center gap-2"
-                    style={{ fontSize: "var(--text-base-secondary)", color: "#555" }}
-                >
-                    <span>{bomLineCount} line items</span>
-                    <span style={{ color: "#ccc" }}>·</span>
-                    <span style={{ fontWeight: 600, color: "#4DB6AC" }}>
-                        {money(bomTotalCost)}
-                    </span>
-                </div>
-            </div>
+            <Container className="pt-6">
+                <div className="overflow-x-auto border border-hairline bg-sheet">
+                    <table className="w-full min-w-[720px] border-collapse">
+                        <thead>
+                            <tr className="bg-chrome">
+                                {headers.map(({ label, align }) => (
+                                    <th key={label} scope="col" className={`px-4 py-2.5 font-mono text-xs font-normal text-label ${align}`}>
+                                        {label}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
 
-            <div className="px-6 py-8 flex justify-center">
-                <div className="w-full max-w-[960px] flex flex-col gap-6">
-                    <DirectLink />
-
-                    {/* Table */}
-                    <div
-                        className="rounded-xl overflow-hidden"
-                        style={{
-                            border: "2px dashed rgba(0,0,0,0.06)",
-                            backgroundColor: "#fff",
-                        }}
-                    >
-                        <table className="w-full" style={{ borderCollapse: "collapse" }}>
-                            <thead>
-                                <tr style={{ backgroundColor: "#4DB6AC" }}>
-                                    {["Part", "Unit", "Qty", "Subtotal", "Vendor"].map((header) => (
-                                        <th
-                                            key={header}
-                                            className="text-left text-white px-4 py-3"
-                                            style={{
-                                                fontSize: "var(--text-base-secondary)",
-                                                fontWeight: 600,
-                                                borderBottom: "2px solid rgba(0,0,0,0.06)",
-                                            }}
-                                        >
-                                            {header}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-
-                            {bomCategories.map((category) => (
-                                <tbody key={category.id}>
-                                    <tr style={{ backgroundColor: "#f0ede4" }}>
-                                        <td
-                                            colSpan={3}
-                                            className="px-4 py-2"
-                                            style={{
-                                                fontSize: "var(--text-sm)",
-                                                fontWeight: 700,
-                                                letterSpacing: "0.06em",
-                                                textTransform: "uppercase",
-                                                color: "#6b6b6b",
-                                            }}
-                                        >
-                                            {category.label}
-                                        </td>
-                                        <td
-                                            className="px-4 py-2"
-                                            style={{
-                                                fontSize: "var(--text-sm)",
-                                                fontWeight: 700,
-                                                color: "#6b6b6b",
-                                            }}
-                                        >
-                                            {money(bomCategorySubtotal(category))}
-                                        </td>
-                                        <td />
-                                    </tr>
-
-                                    {category.items.map((item, idx) => (
-                                        <tr
-                                            key={item.partName}
-                                            style={{
-                                                backgroundColor: idx % 2 === 0 ? "#fff" : "#fbfaf6",
-                                                borderBottom: "1px solid rgba(0,0,0,0.04)",
-                                            }}
-                                        >
-                                            <td className="px-4 py-3">
-                                                <div
-                                                    style={{
-                                                        fontSize: "var(--text-md)",
-                                                        fontWeight: 500,
-                                                    }}
-                                                >
-                                                    {item.partName}
-                                                </div>
-
-                                                {/* Grouped parts — one price, many pieces */}
-                                                {item.includes && (
-                                                    <ul
-                                                        className="mt-1.5 flex flex-col gap-0.5"
-                                                        style={{ listStyle: "none", padding: 0 }}
-                                                    >
-                                                        {item.includes.map((sub) => (
-                                                            <li
-                                                                key={sub.name}
-                                                                className="flex items-center gap-2"
-                                                                style={{
-                                                                    fontSize: "var(--text-sm)",
-                                                                    color: "#666",
-                                                                }}
-                                                            >
-                                                                <span
-                                                                    className="inline-block w-1.5 h-1.5 rounded-full"
-                                                                    style={{
-                                                                        backgroundColor: "#4DB6AC",
-                                                                        flexShrink: 0,
-                                                                    }}
-                                                                />
-                                                                <span>{sub.name}</span>
-                                                                <span style={{ color: "#aaa" }}>
-                                                                    ×{sub.quantity}
-                                                                </span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-
-                                                {item.note && (
-                                                    <div
-                                                        className="mt-1"
-                                                        style={{
-                                                            fontSize: "var(--text-sm)",
-                                                            color: "#999",
-                                                        }}
-                                                    >
-                                                        {item.note}
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td
-                                                className="px-4 py-3 align-top"
-                                                style={{ fontSize: "var(--text-md)", color: "#555" }}
-                                            >
-                                                {unitPriceLabel(item)}
-                                            </td>
-                                            <td
-                                                className="px-4 py-3 align-top"
-                                                style={{ fontSize: "var(--text-md)", color: "#555" }}
-                                            >
-                                                {item.includes
-                                                    ? `${item.includes.length} sizes`
-                                                    : item.quantity ?? "—"}
-                                            </td>
-                                            <td
-                                                className="px-4 py-3 align-top"
-                                                style={{
-                                                    fontSize: "var(--text-md)",
-                                                    fontWeight: item.subtotal ? 600 : 400,
-                                                    color: item.subtotal ? "#1a1a1a" : "#aaa",
-                                                    whiteSpace: "nowrap",
-                                                }}
-                                            >
-                                                {subtotalLabel(item)}
-                                            </td>
-                                            <td className="px-4 py-3 align-top">
-                                                <VendorLink item={item} />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            ))}
-
-                            <tfoot>
-                                <tr style={{ backgroundColor: "#f0ede4" }}>
-                                    <td
-                                        colSpan={3}
-                                        className="px-4 py-4 text-right"
-                                        style={{ fontSize: "var(--text-md)", fontWeight: 700 }}
-                                    >
-                                        Total Cost
-                                    </td>
-                                    <td
-                                        className="px-4 py-4"
-                                        style={{
-                                            fontSize: "var(--text-lg-secondary)",
-                                            fontWeight: 700,
-                                            color: "#4DB6AC",
-                                            whiteSpace: "nowrap",
-                                        }}
-                                    >
-                                        {money(bomTotalCost)}
+                        {bomCategories.map((category) => (
+                            <tbody key={category.id}>
+                                <tr className="border-t border-hairline">
+                                    <th scope="rowgroup" colSpan={3} className="px-4 pt-6 pb-2 text-left font-mono text-xs font-normal text-label lowercase">
+                                        {category.label}
+                                    </th>
+                                    <td className="px-4 pt-6 pb-2 text-right font-mono text-xs text-label">
+                                        {money(bomCategorySubtotal(category))}
                                     </td>
                                     <td />
                                 </tr>
-                            </tfoot>
-                        </table>
-                    </div>
 
-                    <p style={{ fontSize: "var(--text-sm)", color: "#999", lineHeight: 1.6 }}>
-                        “incl.” means the part is covered by another line — bearings come in
-                        multi-packs and every M3 screw, nut and heat-set insert is rolled into the
-                        single <strong>Fasteners</strong> line above.
-                    </p>
+                                {category.items.map((item) => (
+                                    <tr key={item.partName} className="border-t border-rule align-top">
+                                        <td className="px-4 py-3">
+                                            <div>{item.partName}</div>
+                                            {item.includes && (
+                                                <ul className="m-0 mt-1 list-none p-0 font-mono text-xs leading-relaxed text-label">
+                                                    {item.includes.map((sub) => (
+                                                        <li key={sub.name}>
+                                                            {sub.name.toLowerCase()} ×{sub.quantity}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                            {item.note && <p className="mt-1 text-base text-label italic">{item.note}</p>}
+                                        </td>
+                                        <td className="px-4 py-3 text-right font-mono text-sm">{unitPriceLabel(item)}</td>
+                                        <td className="px-4 py-3 text-right font-mono text-sm">
+                                            {item.includes ? `${item.includes.length} sizes` : item.quantity ?? "—"}
+                                        </td>
+                                        <td className={`px-4 py-3 text-right font-mono text-sm whitespace-nowrap ${item.subtotal ? "text-ink" : "text-label"}`}>
+                                            {subtotalLabel(item)}
+                                        </td>
+                                        <td className="px-4 py-3 font-mono text-sm">
+                                            <VendorLink item={item} />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        ))}
+
+                        <tfoot>
+                            <tr className="border-t border-ink">
+                                <th scope="row" colSpan={3} className="px-4 py-4 text-right font-normal">
+                                    Total
+                                </th>
+                                <td className="px-4 py-4 text-right font-mono text-base whitespace-nowrap">
+                                    {money(bomTotalCost)}
+                                </td>
+                                <td />
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-            </div>
-        </div>
+
+                <p className="mt-4 max-w-[760px] text-base text-label">
+                    “incl.” means the part is covered by another line: bearings come in multi-packs, and every M3
+                    screw, nut and heat-set insert is rolled into the single <span className="italic">Fasteners</span>{" "}
+                    line.
+                </p>
+            </Container>
+        </main>
     );
 }

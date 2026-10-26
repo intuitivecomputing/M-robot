@@ -1,0 +1,76 @@
+/*
+ * Direction G ("Object × Monograph") for the docs, matching the project site
+ * (apps/M-website/src/styles/theme.css): white cells on a grey page, hairline
+ * borders, Newsreader text, Geist Mono labels, square corners, one link blue.
+ *
+ * Nuxt UI declares its tokens inside `@layer theme`, so these unlayered rules
+ * take precedence. `.dark` comes after `:root` so it wins in dark mode.
+ */
+
+:root {
+  --font-sans: "Newsreader", Georgia, serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ui-radius: 0rem;
+
+  /* Link blue. 500 is the light-mode accent, 400 the dark-mode one. */
+  --ui-color-primary-50: #eff1ff;
+  --ui-color-primary-100: #dfe4ff;
+  --ui-color-primary-200: #c2cbff;
+  --ui-color-primary-300: #a5b3ff;
+  --ui-color-primary-400: #8ea0ff;
+  --ui-color-primary-500: #2236c9;
+  --ui-color-primary-600: #1c2daa;
+  --ui-color-primary-700: #16248a;
+  --ui-color-primary-800: #111c6b;
+  --ui-color-primary-900: #0d1550;
+  --ui-color-primary-950: #080d33;
+
+  /* Page ground behind the white cells, and code blocks (dark in both modes). */
+  --g-chrome: #f1f2f2;
+  --g-code-bg: #121114;
+  --g-code-header: #1c1b1f;
+  --g-code-border: #121114;
+
+  --ui-text-dimmed: #8a8a8f;
+  --ui-text-muted: #5e5e62;
+  --ui-text-toned: #333336;
+  --ui-text: #1e1e21;
+  --ui-text-highlighted: #121114;
+  --ui-text-inverted: #ffffff;
+  --ui-bg: #ffffff;
+  --ui-bg-muted: #f1f2f2;
+  --ui-bg-elevated: #ecedee;
+  --ui-bg-accented: #e4e6e6;
+  --ui-bg-inverted: #121114;
+  --ui-border: #d9dada;
+  --ui-border-muted: #ecedee;
+  --ui-border-accented: #c4c5c6;
+  --ui-border-inverted: #121114;
+}
+
+.dark {
+  --g-chrome: #0d0d0f;
+  --g-code-bg: #0a0a0b;
+  --g-code-header: #141416;
+  --g-code-border: #2e2d31;
+
+  --ui-text-dimmed: #7a7a80;
+  --ui-text-muted: #a3a3a8;
+  --ui-text-toned: #c8c8cc;
+  --ui-text: #e6e6e8;
+  --ui-text-highlighted: #f5f5f6;
+  --ui-text-inverted: #121114;
+  --ui-bg: #161618;
+  --ui-bg-muted: #1d1d20;
+  --ui-bg-elevated: #232327;
+  --ui-bg-accented: #2c2c31;
+  --ui-bg-inverted: #f1f2f2;
+  --ui-border: #2e2d31;
+  --ui-border-muted: #242427;
+  --ui-border-accented: #3a3a3f;
+  --ui-border-inverted: #f1f2f2;
+}
+
+body {
+  background-color: var(--g-chrome);
+}

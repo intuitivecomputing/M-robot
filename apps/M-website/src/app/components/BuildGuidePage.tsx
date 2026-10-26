@@ -1,39 +1,33 @@
-import { useEffect, useRef, useState, useCallback, forwardRef } from "react";
-import { Download } from "lucide-react";
+import { forwardRef, useCallback, useEffect, useRef, useState, type MutableRefObject } from "react";
 import { BUILD_GUIDE_PDF_URL } from "../data/project";
+import {
+    BUILD_GUIDE_PAGE_VIDEOS,
+    BUILD_GUIDE_PAGES,
+    BUILD_GUIDE_PDF_SIZE,
+    BUILD_GUIDE_VIDEO_ID,
+    buildGuidePageAnchor,
+    buildGuidePageImage,
+    buildGuideSections,
+} from "../data/buildGuide";
+import { Container, HairlineGrid, Label } from "./layout";
+import { YouTubeEmbed } from "./YouTubeEmbed";
 
-// Build guide sections mapped to page ranges
-export const buildGuideSections = [
-    { id: "cover", label: "Cover", startPage: 1, endPage: 1 },
-    { id: "general-guidance", label: "General Guidance", startPage: 2, endPage: 4 },
-    { id: "part-a", label: "Part A: Module Pre-assembly", startPage: 5, endPage: 20 },
-    { id: "part-b", label: "Part B: Body Skeleton", startPage: 21, endPage: 34 },
-    { id: "part-c", label: "Part C: Head Assembly", startPage: 35, endPage: 44 },
-    { id: "part-d", label: "Part D: Pi & Calibration", startPage: 45, endPage: 49 },
-    { id: "part-e", label: "Part E: Final Assembly", startPage: 50, endPage: 67 },
-];
+/** Height of the sticky parts bar, so jumps land below it. */
+const PARTS_BAR_OFFSET = 64;
 
-const TOTAL_PAGES = 67;
-
-interface BuildGuidePageProps {
-    onActiveSectionChange?: (sectionId: string) => void;
-}
-
-export function BuildGuidePage({ onActiveSectionChange }: BuildGuidePageProps) {
-    const containerRef = useRef<HTMLDivElement>(null);
+export function BuildGuidePage() {
     const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [visiblePage, setVisiblePage] = useState(1);
 
-    // Scroll-based page detection — find which page is closest to the trigger line
+    // Track the page closest to the upper third of the viewport.
     useEffect(() => {
         const handleScroll = () => {
             const triggerY = window.innerHeight * 0.3;
             let closestPage = 1;
             let closestDist = Infinity;
 
-            for (let i = 0; i < pageRefs.current.length; i++) {
-                const el = pageRefs.current[i];
-                if (!el) continue;
+            pageRefs.current.forEach((el, i) => {
+                if (!el) return;
                 const rect = el.getBoundingClientRect();
                 if (rect.bottom > 0 && rect.top < triggerY + rect.height * 0.5) {
                     const dist = Math.abs(rect.top - triggerY);
@@ -42,7 +36,7 @@ export function BuildGuidePage({ onActiveSectionChange }: BuildGuidePageProps) {
                         closestPage = i + 1;
                     }
                 }
-            }
+            });
 
             setVisiblePage((prev) => (prev !== closestPage ? closestPage : prev));
         };
@@ -52,159 +46,157 @@ export function BuildGuidePage({ onActiveSectionChange }: BuildGuidePageProps) {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Notify parent of active section
-    useEffect(() => {
-        const section = buildGuideSections.find(
-            (s) => visiblePage >= s.startPage && visiblePage <= s.endPage
-        );
-        if (section && onActiveSectionChange) {
-            onActiveSectionChange(section.id);
-        }
-    }, [visiblePage, onActiveSectionChange]);
+    const activeSection = buildGuideSections.find(
+        (s) => visiblePage >= s.startPage && visiblePage <= s.endPage
+    );
 
     const scrollToPage = useCallback((pageNum: number) => {
-        const ref = pageRefs.current[pageNum - 1];
-        if (ref) {
-            ref.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        const el = pageRefs.current[pageNum - 1];
+        if (!el) return;
+        const top = el.getBoundingClientRect().top + window.scrollY - PARTS_BAR_OFFSET;
+        window.scrollTo({ top, behavior: "smooth" });
     }, []);
 
+    // Deep links (/build-guide#page-24) land on that page. Unloaded pages keep
+    // their 16:9 placeholder height, so the target position is already right.
+    useEffect(() => {
+        const match = window.location.hash.match(/^#page-(\d+)$/);
+        if (!match) return;
+        const pageNum = Number(match[1]);
+        if (pageNum >= 1 && pageNum <= BUILD_GUIDE_PAGES) {
+            requestAnimationFrame(() => scrollToPage(pageNum));
+        }
+    }, [scrollToPage]);
+
     return (
-        <div
-            ref={containerRef}
-            className="min-h-screen"
-            style={{ backgroundColor: "#FBF8EF", fontFamily: "'DM Sans', sans-serif" }}
-        >
-            {/* Top bar matching home style */}
-            <div
-                className="flex items-center justify-between px-10 py-4 sticky top-0 z-10"
-                style={{
-                    borderBottom: "2px dashed rgba(0,0,0,0.08)",
-                    backgroundColor: "#FBF8EF",
-                }}
-            >
-                <div className="flex items-center gap-2">
-                    <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#4DB6AC" }}></span>
-                    <span style={{ fontSize: "var(--text-base-secondary)", color: "#555" }}>build guide</span>
-                </div>
-                <div className="flex items-center gap-4" style={{ fontSize: "var(--text-base-secondary)", color: "#555" }}>
-                    <span>page {visiblePage} / {TOTAL_PAGES}</span>
-                    <a
-                        href={BUILD_GUIDE_PDF_URL}
-                        download
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors duration-200"
-                        style={{
-                            fontSize: "var(--text-sm)",
-                            fontWeight: 600,
-                            color: "#4DB6AC",
-                            backgroundColor: "rgba(77,182,172,0.1)",
-                            textDecoration: "none",
-                        }}
-                    >
-                        <Download size={13} />
-                        PDF
-                    </a>
-                </div>
-            </div>
+        <main>
+            <Container className="pt-6">
+                <HairlineGrid as="section">
+                    <div className="flex grow basis-60 flex-col bg-sheet px-6 py-8 md:px-7">
+                        <Label>03 · making</Label>
+                        <h1 className="mt-1 text-[clamp(40px,5vw,56px)] leading-none font-light tracking-[-0.02em]">
+                            Build guide
+                        </h1>
+                        <p className="mt-4 max-w-sm text-toned">
+                            The illustrated, step-by-step assembly of M, from printed parts to a calibrated robot.
+                        </p>
+                        <p className="mt-auto pt-8 font-mono text-[13px] leading-relaxed">
+                            <a href={BUILD_GUIDE_PDF_URL} download>
+                                build-guide.pdf ↓
+                            </a>
+                            <br />
+                            <span className="text-label">
+                                {BUILD_GUIDE_PAGES} pages · parts a–f · {BUILD_GUIDE_PDF_SIZE}
+                            </span>
+                        </p>
+                    </div>
+                    <div className="min-w-0 grow-[999] basis-[600px] bg-ink">
+                        <YouTubeEmbed id={BUILD_GUIDE_VIDEO_ID} title="M build guide video" className="block aspect-video w-full" />
+                    </div>
+                </HairlineGrid>
+            </Container>
 
-            {/* Build guide video */}
-            <div className="px-6 pt-8 flex flex-col items-center">
-                <div
-                    className="w-full max-w-[960px] rounded-xl overflow-hidden"
-                    style={{ border: "2px dashed rgba(0,0,0,0.06)", backgroundColor: "#000" }}
-                >
-                    <video
-                        className="w-full h-auto block"
-                        controls
-                        preload="metadata"
-                        playsInline
-                    >
-                        <source
-                            src="https://oylwirmyda1655xv.public.blob.vercel-storage.com/M%20Build%20Guide%20Draft%202%20%281%29.mp4"
-                            type="video/mp4"
+            <nav aria-label="Build guide parts" className="sticky top-0 z-10 mt-6 border-y border-hairline bg-chrome/95 backdrop-blur">
+                <Container className="flex items-center gap-6 py-3">
+                    <ol className="m-0 flex min-w-0 flex-1 list-none gap-1 overflow-x-auto p-0 font-mono text-[13px] whitespace-nowrap">
+                        {buildGuideSections.map((section) => {
+                            const isActive = activeSection?.id === section.id;
+                            return (
+                                <li key={section.id}>
+                                    <button
+                                        type="button"
+                                        onClick={() => scrollToPage(section.startPage)}
+                                        aria-current={isActive ? "step" : undefined}
+                                        className={`min-h-9 cursor-pointer px-3 lowercase ${
+                                            isActive ? "bg-ink text-white" : "bg-transparent text-ink hover:bg-sheet"
+                                        }`}
+                                    >
+                                        {section.label}
+                                    </button>
+                                </li>
+                            );
+                        })}
+                    </ol>
+                    <span className="hidden shrink-0 font-mono text-[13px] text-label sm:inline">
+                        page {visiblePage} / {BUILD_GUIDE_PAGES}
+                    </span>
+                </Container>
+            </nav>
+
+            <Container className="pt-6">
+                <div className="mx-auto flex max-w-[1100px] flex-col gap-px border border-hairline bg-hairline">
+                    {Array.from({ length: BUILD_GUIDE_PAGES }, (_, i) => i + 1).map((pageNum) => (
+                        <LazyPage
+                            key={pageNum}
+                            pageNum={pageNum}
+                            ref={(el) => {
+                                pageRefs.current[pageNum - 1] = el;
+                            }}
                         />
-                        Your browser does not support the video tag.
-                    </video>
+                    ))}
                 </div>
-            </div>
-
-            {/* Continuous page display */}
-            <div className="px-6 py-8 flex flex-col items-center gap-4">
-                {Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1).map((pageNum) => (
-                    <LazyPage
-                        key={pageNum}
-                        pageNum={pageNum}
-                        ref={(el) => { pageRefs.current[pageNum - 1] = el; }}
-                    />
-                ))}
-            </div>
-        </div>
+            </Container>
+        </main>
     );
 }
 
-// Lazy-loaded page: only renders the image when near the viewport
-const LazyPage = forwardRef<HTMLDivElement, { pageNum: number }>(
-    function LazyPage({ pageNum }, forwardedRef) {
-        const sentinelRef = useRef<HTMLDivElement>(null);
-        const [loaded, setLoaded] = useState(pageNum <= 3);
+// Only renders the page image once it is near the viewport.
+const LazyPage = forwardRef<HTMLDivElement, { pageNum: number }>(function LazyPage({ pageNum }, forwardedRef) {
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+    const [loaded, setLoaded] = useState(pageNum <= 3);
+    const video = BUILD_GUIDE_PAGE_VIDEOS[pageNum];
 
-        useEffect(() => {
-            if (loaded) return;
-            const el = sentinelRef.current;
-            if (!el) return;
+    useEffect(() => {
+        if (loaded) return;
+        const el = sentinelRef.current;
+        if (!el) return;
 
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting) {
-                        setLoaded(true);
-                        observer.disconnect();
-                    }
-                },
-                { rootMargin: "600px" }
-            );
-            observer.observe(el);
-            return () => observer.disconnect();
-        }, [loaded]);
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setLoaded(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: "600px" }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [loaded]);
 
-        return (
-            <div
-                ref={(el) => {
-                    (sentinelRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-                    if (typeof forwardedRef === "function") forwardedRef(el);
-                    else if (forwardedRef) forwardedRef.current = el;
-                }}
-                data-page={pageNum}
-                className="w-full max-w-[960px] rounded-xl overflow-hidden"
-                style={{
-                    border: "2px dashed rgba(0,0,0,0.06)",
-                    backgroundColor: "#fff",
-                    // Reserve space so scroll position stays stable
-                    minHeight: loaded ? undefined : "540px",
-                    aspectRatio: loaded ? undefined : "16 / 9",
-                }}
-            >
-                {loaded ? (
+    return (
+        <div
+            ref={(el) => {
+                sentinelRef.current = el;
+                if (typeof forwardedRef === "function") forwardedRef(el);
+                else if (forwardedRef) (forwardedRef as MutableRefObject<HTMLDivElement | null>).current = el;
+            }}
+            id={buildGuidePageAnchor(pageNum)}
+            data-page={pageNum}
+            className="relative bg-sheet"
+        >
+            {loaded ? (
+                <>
                     <img
-                        src={`/images/build-guide/page-${pageNum}.webp`}
-                        alt={`Build guide page ${pageNum}`}
-                        className="w-full h-auto block"
+                        src={buildGuidePageImage(pageNum)}
+                        alt={video ? `Build guide page ${pageNum}: ${video.title} video` : `Build guide page ${pageNum}`}
+                        className="block h-auto w-full"
                         decoding="async"
                     />
-                ) : (
-                    <div
-                        className="w-full flex items-center justify-center"
-                        style={{ aspectRatio: "16 / 9", color: "#aaa", fontSize: "var(--text-base-secondary)" }}
-                    >
-                        Page {pageNum}
-                    </div>
-                )}
-            </div>
-        );
-    }
-);
-
-// Export scroll helper for sidebar use
-export function getScrollToSection(sectionId: string) {
-    const section = buildGuideSections.find((s) => s.id === sectionId);
-    return section?.startPage ?? 1;
-}
+                    {video && (
+                        <YouTubeEmbed
+                            id={video.id}
+                            title={`${video.title} video`}
+                            lazy
+                            className="absolute inset-0 h-full w-full bg-ink"
+                        />
+                    )}
+                </>
+            ) : (
+                <div className="flex aspect-video w-full items-center justify-center font-mono text-[13px] text-label">
+                    page {pageNum}
+                </div>
+            )}
+        </div>
+    );
+});
