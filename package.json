@@ -1,0 +1,21 @@
+{
+  "name": "m-platform-workspace",
+  "private": true,
+  "packageManager": "npm@11.6.2",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "latest"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "overrides": {
+    "serialize-javascript": "^7.0.4"
+  }
+}

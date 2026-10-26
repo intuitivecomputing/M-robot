@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use M in your research, please cite our paper."
+title: "M Platform: project website and documentation"
+authors:
+  - name: "Intuitive Computing Laboratory, Johns Hopkins University"
+repository-code: "https://github.com/intuitivecomputing/M-website"
+url: "https://m-website-taupe.vercel.app"
+license: MIT
+# TODO(release): add volume, issue, pages, and DOI once the RA-L version is out.
+preferred-citation:
+  type: article
+  title: "Introducing M: A Modular, Modifiable Social Robot"
+  authors:
+    - family-names: "Antony"
+      given-names: "Victor Nikhil"
+      affiliation: "Johns Hopkins University"
+    - family-names: "Gong"
+      given-names: "Zhili"
+      affiliation: "Rice University"
+    - family-names: "Kim"
+      given-names: "Yoonjae"
+      affiliation: "Johns Hopkins University"
+    - family-names: "Huang"
+      given-names: "Chien-Ming"
+      affiliation: "Johns Hopkins University"
+  journal: "IEEE Robotics and Automation Letters"
+  year: 2026
+  identifiers:
+    - type: other
+      value: "arXiv:2603.19134"
+      description: "arXiv preprint"
+  url: "https://arxiv.org/abs/2603.19134"

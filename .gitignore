@@ -1,0 +1,13 @@
+.documentation
+node_modules
+.kiro
+.vercel
+documentation_page
+.DS_Store
+node_modules/
+dist/
+.turbo/
+apps/*/node_modules/
+apps/*/dist/
+.turbo/
+.claude/
