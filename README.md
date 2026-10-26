@@ -8,7 +8,7 @@ M is an open-source, low-cost socially assistive robot platform designed to make
 
 - **Paper**: https://arxiv.org/abs/2603.19134
 - **Project website**: https://m-robot-platform.vercel.app. It hosts the build guide, bill of materials, and CAD files.
-- **Documentation**: https://m-website-docs.vercel.app
+- **Documentation**: https://m-robot-platform-docs.vercel.app
 - **Robot software (ROS 2)**: https://github.com/intuitivecomputing/m-robot-codebase
 
 This repository contains the source for the project website and the documentation site.

@@ -22,11 +22,11 @@
     "rewrites": [
         {
             "source": "/docs",
-            "destination": "https://m-website-docs.vercel.app/intro"
+            "destination": "https://m-robot-platform-docs.vercel.app/intro"
         },
         {
             "source": "/docs/(.*)",
-            "destination": "https://m-website-docs.vercel.app/$1"
+            "destination": "https://m-robot-platform-docs.vercel.app/$1"
         }
     ]
 }

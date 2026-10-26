@@ -44,7 +44,7 @@ export const ACKNOWLEDGMENTS: string | null = null;
 export const CODE_URL = "https://github.com/intuitivecomputing/m-robot-codebase";
 export const ISSUES_URL = `${CODE_URL}/issues`;
 export const WEBSITE_REPO_URL = "https://github.com/intuitivecomputing/M-website";
-export const DOCS_URL = "https://m-website-docs.vercel.app";
+export const DOCS_URL = "https://m-robot-platform-docs.vercel.app";
 
 // TODO(release): point at the GitHub hardware folder / Zenodo DOI once the CAD
 // is published there. The review-era Drive folder works in the meantime.

@@ -1,0 +1,7 @@
+# Local build artifacts and secrets; Vercel builds from source.
+.nuxt
+.output
+.data
+.turbo
+node_modules
+.env*
