@@ -15,16 +15,10 @@ export default defineAppConfig({
     title: 'M Platform',
     description: 'Documentation for M, an open-source, modular, low-cost socially assistive robot platform for reproducible SAR research (IEEE RA-L 2026).',
   },
-  // Header/footer GitHub icon and "Edit this page" links. Set explicitly because
-  // the docs live in a monorepo subfolder and Vercel CLI deploys don't include
-  // git metadata.
-  github: {
-    owner: 'intuitivecomputing',
-    name: 'M-website',
-    url: 'https://github.com/intuitivecomputing/M-website',
-    branch: 'main',
-    rootDir: 'apps/M-website-docs',
-  },
+  // No "Edit this page" / "Report an issue" links or header GitHub icon. Set to
+  // false explicitly: left unset, Docus infers the repo from git and adds them
+  // back. The code repo is linked from the header and footer components instead.
+  github: false,
   // Direction G, matching the project site. Colors, fonts, and radius are
   // tokens in assets/css/main.css; these classes reshape the components.
   ui: {

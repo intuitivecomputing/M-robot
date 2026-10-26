@@ -15,5 +15,12 @@
     >
       paper ↗
     </NuxtLink>
+    <NuxtLink
+      to="https://github.com/intuitivecomputing/m-robot-codebase"
+      target="_blank"
+      class="text-highlighted hover:underline"
+    >
+      github ↗
+    </NuxtLink>
   </div>
 </template>

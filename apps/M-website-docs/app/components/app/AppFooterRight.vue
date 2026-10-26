@@ -1,12 +1,10 @@
 <!-- Overrides Docus's AppFooterRight (icon buttons) with the site's mono links. -->
 <script setup lang="ts">
-const appConfig = useAppConfig()
-
-const links = computed(() => [
+const links = [
   { label: 'm project website', to: 'https://m-robot-platform.vercel.app' },
   { label: 'paper', to: 'https://arxiv.org/abs/2603.19134' },
-  ...(appConfig.github ? [{ label: 'github', to: appConfig.github.url }] : []),
-])
+  { label: 'github', to: 'https://github.com/intuitivecomputing/m-robot-codebase' },
+]
 </script>
 
 <template>
