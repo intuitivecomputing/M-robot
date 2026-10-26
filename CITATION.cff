@@ -4,7 +4,7 @@ title: "M Platform: project website and documentation"
 authors:
   - name: "Intuitive Computing Laboratory, Johns Hopkins University"
 repository-code: "https://github.com/intuitivecomputing/M-website"
-url: "https://m-website-taupe.vercel.app"
+url: "https://m-robot-platform.vercel.app"
 license: MIT
 # TODO(release): add volume, issue, pages, and DOI once the RA-L version is out.
 preferred-citation:

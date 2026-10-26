@@ -3,7 +3,7 @@
   <div class="text-sm text-muted">
     Copyright © {{ new Date().getFullYear() }} Intuitive Computing Laboratory, Johns Hopkins University ·
     <NuxtLink
-      to="https://m-website-taupe.vercel.app"
+      to="https://m-robot-platform.vercel.app"
       target="_blank"
       class="hover:text-default underline-offset-2 hover:underline"
     >

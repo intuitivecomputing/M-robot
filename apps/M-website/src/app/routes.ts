@@ -25,7 +25,7 @@ export const pageForPath = (pathname: string): Page => {
 };
 
 /** Fallback for non-browser contexts; the live origin wins when available. */
-export const SITE_ORIGIN = "https://m-website-taupe.vercel.app";
+export const SITE_ORIGIN = "https://m-robot-platform.vercel.app";
 
 export const canonicalUrlForPage = (page: Page): string => {
     const origin =
