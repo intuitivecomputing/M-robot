@@ -4,6 +4,7 @@
   "packageManager": "npm@11.6.2",
   "scripts": {
     "build": "turbo run build",
+    "build:pages": "bash scripts/build-pages.sh",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

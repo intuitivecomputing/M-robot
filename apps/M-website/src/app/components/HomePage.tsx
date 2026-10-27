@@ -15,7 +15,7 @@ import {
 } from "../data/project";
 import { bomCategories, bomCategorySubtotal, bomLineCount, bomTotalCost } from "../data/billOfMaterials";
 import { BUILD_GUIDE_PAGES, BUILD_GUIDE_PDF_SIZE, buildGuidePageAnchor } from "../data/buildGuide";
-import { pathForPage, type Page } from "../routes";
+import { pathForPage, withBase, type Page } from "../routes";
 import { Caption, ChapterRow, Container, ExternalLink, HairlineGrid, Label } from "./layout";
 import { YouTubeEmbed } from "./YouTubeEmbed";
 
@@ -49,9 +49,9 @@ const anatomy = [
 // Note the file names: M-red-transparent is the plain pink-and-white shell and
 // M-pink-transparent is the red-framed storyteller.
 const shells = [
-    { name: "simple", image: "/images/M-red-transparent.webp", backdrop: "bg-shell-pink", alt: "M with a plain pink-and-white printed shell", figure: "2a" },
-    { name: "green", image: "/images/M-green-transparent.webp", backdrop: "bg-shell-green", alt: "M with a green printed shell", figure: "2b" },
-    { name: "storyteller", image: "/images/M-pink-transparent.webp", backdrop: "bg-shell-red", alt: "M as a storyteller with a spiky red face frame and a plush body", figure: "2c" },
+    { name: "simple", image: withBase("/images/M-red-transparent.webp"), backdrop: "bg-shell-pink", alt: "M with a plain pink-and-white printed shell", figure: "2a" },
+    { name: "green", image: withBase("/images/M-green-transparent.webp"), backdrop: "bg-shell-green", alt: "M with a green printed shell", figure: "2b" },
+    { name: "storyteller", image: withBase("/images/M-pink-transparent.webp"), backdrop: "bg-shell-red", alt: "M as a storyteller with a spiky red face frame and a plush body", figure: "2c" },
 ];
 
 /** Pages of the build guide shown as plates; each links to its page in the guide. */
@@ -115,7 +115,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     {/* The photo keeps its own proportions; the cell's grey takes up any extra height. */}
                     <figure className="m-0 flex min-w-0 grow-[2] basis-[520px] flex-col justify-end bg-shell-grey">
                         <img
-                            src="/images/M-with-monitor-use-case.webp"
+                            src={withBase("/images/M-with-monitor-use-case.webp")}
                             alt="M, with an orange face frame and its screen showing a friendly face, beside a monitor running an exercise program for older adults"
                             width={2400}
                             height={1668}
@@ -197,7 +197,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                         <HairlineGrid className="mt-8">
                             <figure className="m-0 min-w-0 grow-[3] basis-[360px] bg-sheet p-5">
                                 <img
-                                    src="/images/mechanical-composition.webp"
+                                    src={withBase("/images/mechanical-composition.webp")}
                                     alt="Exploded view of M: head module, rotation and nod modules, central frame, arms, body shells, and body rotation module"
                                     loading="lazy"
                                     className="block aspect-square w-full object-contain"
@@ -267,7 +267,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                                             className="group relative block"
                                         >
                                             <img
-                                                src={`/images/build-guide/page-${plate.page}.webp`}
+                                                src={withBase(`/images/build-guide/page-${plate.page}.webp`)}
                                                 alt={plate.alt}
                                                 loading="lazy"
                                                 className="block aspect-video w-full object-cover"
@@ -313,7 +313,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                         </a>
                         <figure className="m-0 mt-8 border border-hairline">
                             <img
-                                src="/images/M-sim.webp"
+                                src={withBase("/images/M-sim.webp")}
                                 alt="The M simulator: a 3D robot model beside joint-position sliders and face controls"
                                 loading="lazy"
                                 className="block w-full"
@@ -366,7 +366,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                                 {/* Absolutely positioned on wide screens so the photo adds no height of its own. */}
                                 <div className="relative md:grow">
                                     <img
-                                        src="/images/deployed_sen2.webp"
+                                        src={withBase("/images/deployed_sen2.webp")}
                                         alt="A parent and child, seen from behind, sitting with M in its plush storyteller shell at the child's desk at home"
                                         loading="lazy"
                                         className="block aspect-[3/4] w-full object-cover object-[50%_65%] md:absolute md:inset-0 md:aspect-auto md:h-full"

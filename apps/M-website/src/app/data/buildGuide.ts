@@ -1,5 +1,7 @@
 // Build guide structure: sections mapped to page ranges of the PDF export.
 
+import { withBase } from "../routes";
+
 export interface BuildGuideSection {
     id: string;
     label: string;
@@ -30,7 +32,7 @@ export const BUILD_GUIDE_PAGE_VIDEOS: Record<number, { id: string; title: string
     50: { id: "7ZhQXwmetBc", title: "Servo initialization" },
 };
 
-export const buildGuidePageImage = (pageNum: number) => `/images/build-guide/page-${pageNum}.webp`;
+export const buildGuidePageImage = (pageNum: number) => withBase(`/images/build-guide/page-${pageNum}.webp`);
 
 /** Anchor for one page of the guide, e.g. /build-guide#page-24. */
 export const buildGuidePageAnchor = (pageNum: number) => `page-${pageNum}`;

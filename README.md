@@ -7,8 +7,8 @@ M is an open-source, low-cost socially assistive robot platform designed to make
 <!-- TODO(release): add the IEEE Xplore / DOI link once published. -->
 
 - **Paper**: https://arxiv.org/abs/2603.19134
-- **Project website**: https://m-robot-platform.vercel.app. It hosts the build guide, bill of materials, and CAD files.
-- **Documentation**: https://m-robot-platform-docs.vercel.app
+- **Project website**: https://intuitivecomputing.github.io/M-robot/. It hosts the build guide, bill of materials, and CAD files.
+- **Documentation**: https://intuitivecomputing.github.io/M-robot/docs/
 - **Robot software (ROS 2)**: https://github.com/intuitivecomputing/m-robot-codebase
 
 This repository contains the source for the project website and the documentation site.
@@ -42,7 +42,14 @@ npm run dev -w M-website-docs
 
 ## Deployment
 
-The apps are deployed to Vercel. `./deploy.sh` creates preview deployments of each app, and `./deploy.sh --prod` deploys to production. On the main site, `/docs` is rewritten to the docs deployment (see `apps/M-website/vercel.json`).
+The project site and the docs are published to GitHub Pages by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) on every push to `main`:
+
+- Project site: https://intuitivecomputing.github.io/M-robot/
+- Docs: https://intuitivecomputing.github.io/M-robot/docs/
+
+The workflow runs `npm run build:pages` ([`scripts/build-pages.sh`](scripts/build-pages.sh)). The script builds both apps under those base paths and assembles them into `_site/`. To check the output before pushing, run it locally and serve `_site/` at `/M-website/`.
+
+The plant research site is deployed separately to Vercel with `./deploy.sh` (preview) or `./deploy.sh --prod`.
 
 ## License
 

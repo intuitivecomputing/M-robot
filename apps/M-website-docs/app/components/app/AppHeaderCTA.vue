@@ -2,7 +2,7 @@
 <template>
   <div class="me-1 hidden items-center gap-5 font-mono text-[13px] md:flex">
     <NuxtLink
-      to="https://m-robot-platform.vercel.app"
+      to="https://intuitivecomputing.github.io/M-robot/"
       target="_blank"
       class="text-highlighted hover:underline"
     >

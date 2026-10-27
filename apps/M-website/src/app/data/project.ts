@@ -3,6 +3,8 @@
 //
 // TODO(release): fill in every value marked TODO(release) before going public.
 
+import { withBase } from "../routes";
+
 export interface Author {
     name: string;
     /** 1-based indices into AFFILIATIONS. */
@@ -43,8 +45,8 @@ export const ACKNOWLEDGMENTS: string | null = null;
 
 export const CODE_URL = "https://github.com/intuitivecomputing/m-robot-codebase";
 export const ISSUES_URL = `${CODE_URL}/issues`;
-export const WEBSITE_REPO_URL = "https://github.com/intuitivecomputing/M-website";
-export const DOCS_URL = "https://m-robot-platform-docs.vercel.app";
+export const WEBSITE_REPO_URL = "https://github.com/intuitivecomputing/M-robot";
+export const DOCS_URL = "https://intuitivecomputing.github.io/M-robot/docs";
 export const SIMULATION_DOCS_URL = `${DOCS_URL}/intro/simulation`;
 
 // TODO(release): point at the GitHub hardware folder / Zenodo DOI once the CAD
@@ -52,7 +54,7 @@ export const SIMULATION_DOCS_URL = `${DOCS_URL}/intro/simulation`;
 export const CAD_URL =
     "https://drive.google.com/drive/folders/1mZGSkGwyXTsEO5Tp7jAGq5YJjZDiFn0S?usp=sharing";
 
-export const BUILD_GUIDE_PDF_URL = "/downloads/M-build-guide.pdf";
+export const BUILD_GUIDE_PDF_URL = withBase("/downloads/M-build-guide.pdf");
 
 // TODO(release): confirm the hardware and content licenses.
 export const LICENSES = {

@@ -3,7 +3,9 @@
 # Ensure script stops on errors
 set -e
 
-echo "🚀 Starting manual deployment to Vercel for both apps..."
+# The M project site and docs deploy to GitHub Pages instead
+# (.github/workflows/pages.yml); this script only covers the plant research site.
+echo "🚀 Starting manual deployment to Vercel for the plant research website..."
 
 # Check if vercel CLI is installed
 if ! command -v vercel &> /dev/null
@@ -23,27 +25,11 @@ fi
 
 echo ""
 echo "====================================="
-echo "1️⃣ Deploying WEB app"
-echo "====================================="
-cd apps/M-website
-vercel $PROD_FLAG
-cd ../..
-
-echo ""
-echo "====================================="
-echo "2️⃣ Deploying DOCS app"
-echo "====================================="
-cd apps/M-website-docs
-vercel $PROD_FLAG
-cd ../..
-
-echo ""
-echo "====================================="
-echo "3️⃣ Deploying PLANT RESEARCH WEBSITE"
+echo "Deploying PLANT RESEARCH WEBSITE"
 echo "====================================="
 cd apps/plant-research-website
 vercel $PROD_FLAG
 cd ../..
 
 echo ""
-echo "✅ All deployments completed!"
+echo "✅ Deployment completed!"

@@ -1,5 +1,14 @@
 export type Page = "home" | "build-guide" | "bom";
 
+/**
+ * The path the site is served under: "/" in dev, "/M-robot/" on GitHub
+ * Pages. Set at build time with `vite build --base` (see scripts/build-pages.sh).
+ */
+const BASE = import.meta.env.BASE_URL;
+
+/** Prefixes a root-relative path such as "/images/x.webp" with the base. */
+export const withBase = (path: string): string => `${BASE}${path.replace(/^\/+/, "")}`;
+
 const PATH_BY_PAGE: Record<Page, string> = {
     home: "/",
     "build-guide": "/build-guide",
@@ -17,15 +26,16 @@ const PAGE_BY_PATH: Record<string, Page> = {
     "/buildguide": "build-guide",
 };
 
-export const pathForPage = (page: Page): string => PATH_BY_PAGE[page];
+export const pathForPage = (page: Page): string => withBase(PATH_BY_PAGE[page]);
 
 export const pageForPath = (pathname: string): Page => {
-    const normalized = pathname.replace(/\/+$/, "").toLowerCase();
+    const sitePath = pathname.startsWith(BASE) ? pathname.slice(BASE.length - 1) : pathname;
+    const normalized = sitePath.replace(/\/+$/, "").toLowerCase();
     return PAGE_BY_PATH[normalized] ?? "home";
 };
 
 /** Fallback for non-browser contexts; the live origin wins when available. */
-export const SITE_ORIGIN = "https://m-robot-platform.vercel.app";
+export const SITE_ORIGIN = "https://intuitivecomputing.github.io";
 
 export const canonicalUrlForPage = (page: Page): string => {
     const origin =
