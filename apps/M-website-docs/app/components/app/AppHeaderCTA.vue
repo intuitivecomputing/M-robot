@@ -16,7 +16,7 @@
       paper ↗
     </NuxtLink>
     <NuxtLink
-      to="https://github.com/intuitivecomputing/m-robot-codebase"
+      to="https://github.com/intuitivecomputing/m-robot-files"
       target="_blank"
       class="text-highlighted hover:underline"
     >

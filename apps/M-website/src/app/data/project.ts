@@ -30,7 +30,7 @@ export const AUTHORS: Author[] = [
 /** Index 0 is superscript 1. */
 export const AFFILIATIONS = ["Johns Hopkins University", "Rice University"];
 
-/** Copyright holder; matches the LICENSE in m-robot-codebase. */
+/** Copyright holder; matches the LICENSE in m-robot-files. */
 export const COPYRIGHT_HOLDER = "Intuitive Computing Laboratory, Johns Hopkins University";
 
 // TODO(release): IEEE Xplore / DOI link once published. Hidden until set.
@@ -43,7 +43,7 @@ export const CONTACT_EMAIL: string | null = null;
 // TODO(release): funding / acknowledgments line for the footer. Hidden until set.
 export const ACKNOWLEDGMENTS: string | null = null;
 
-export const CODE_URL = "https://github.com/intuitivecomputing/m-robot-codebase";
+export const CODE_URL = "https://github.com/intuitivecomputing/m-robot-files";
 export const ISSUES_URL = `${CODE_URL}/issues`;
 export const WEBSITE_REPO_URL = "https://github.com/intuitivecomputing/M-robot";
 export const DOCS_URL = "https://intuitivecomputing.github.io/M-robot/docs";

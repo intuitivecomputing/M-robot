@@ -429,7 +429,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                         <div className="flex min-w-0 grow-[999] basis-[600px] flex-wrap gap-px">
                             <FileCell href={BUILD_GUIDE_PDF_URL} title="Build guide" meta={`pdf · ${BUILD_GUIDE_PAGES} pages · ${BUILD_GUIDE_PDF_SIZE}`} download />
                             <FileCell href={CAD_URL} title="CAD files" meta="every printed part" />
-                            <FileCell href={CODE_URL} title="Software" meta="m-robot-codebase · mit" />
+                            <FileCell href={CODE_URL} title="Software" meta="m-robot-files · mit" />
                             <FileCell href={DOCS_URL} title="Documentation" meta="api, guides, setup" />
                         </div>
                     </section>

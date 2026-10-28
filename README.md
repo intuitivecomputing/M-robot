@@ -9,7 +9,7 @@ M is an open-source, low-cost socially assistive robot platform designed to make
 - **Paper**: https://arxiv.org/abs/2603.19134
 - **Project website**: https://intuitivecomputing.github.io/M-robot/. It hosts the build guide, bill of materials, and CAD files.
 - **Documentation**: https://intuitivecomputing.github.io/M-robot/docs/
-- **Robot software (ROS 2)**: https://github.com/intuitivecomputing/m-robot-codebase
+- **Robot software**: https://github.com/intuitivecomputing/m-robot-files
 
 This repository contains the source for the project website and the documentation site.
 
@@ -54,7 +54,7 @@ The plant research site is deployed separately to Vercel with `./deploy.sh` (pre
 ## License
 
 - Website and documentation **source code**: [MIT](LICENSE)
-- **Robot software**: MIT, see [m-robot-codebase](https://github.com/intuitivecomputing/m-robot-codebase)
+- **Robot software**: MIT, see [m-robot-files](https://github.com/intuitivecomputing/m-robot-files)
 - **Hardware design files (CAD)**: CERN-OHL-P-2.0 <!-- TODO(release): confirm -->
 - **Build guide, documentation text, images, and videos**: CC BY 4.0 <!-- TODO(release): confirm -->
 
